@@ -1,86 +1,73 @@
-package com.drone.delivery.model;
-
-import java.util.List;
+package com.drone.delivery.dto;
 
 import com.drone.delivery.model.enums.StatusDrone;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class Drone {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DroneStatusDTO {
     private Long id;
-    
     private String nome;
     private StatusDrone status;
-    private Double capacidadeMaxima = 10.0; // kg
-    private Double alcanceMaximo = 20.0; // km
+    private Double capacidadeMaxima;
+    private Double alcanceMaximo;
+    private Double posicaoX;
+    private Double posicaoY;
     
-    @Embedded
-    private Coordenada posicaoAtual;
+    // Construtores
+    public DroneStatusDTO() {}
     
-    @OneToMany(mappedBy = "drone")
-    private List<Voo> voos;
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getNome() {
         return nome;
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
-
+    
     public StatusDrone getStatus() {
         return status;
     }
-
+    
     public void setStatus(StatusDrone status) {
         this.status = status;
     }
-
+    
     public Double getCapacidadeMaxima() {
         return capacidadeMaxima;
     }
-
+    
     public void setCapacidadeMaxima(Double capacidadeMaxima) {
         this.capacidadeMaxima = capacidadeMaxima;
     }
-
+    
     public Double getAlcanceMaximo() {
         return alcanceMaximo;
     }
-
+    
     public void setAlcanceMaximo(Double alcanceMaximo) {
         this.alcanceMaximo = alcanceMaximo;
     }
-
-    public Coordenada getPosicaoAtual() {
-        return posicaoAtual;
+    
+    public Double getPosicaoX() {
+        return posicaoX;
     }
-
-    public void setPosicaoAtual(Coordenada posicaoAtual) {
-        this.posicaoAtual = posicaoAtual;
+    
+    public void setPosicaoX(Double posicaoX) {
+        this.posicaoX = posicaoX;
     }
-
-    public List<Voo> getVoos() {
-        return voos;
+    
+    public Double getPosicaoY() {
+        return posicaoY;
     }
-
-    public void setVoos(List<Voo> voos) {
-        this.voos = voos;
+    
+    public void setPosicaoY(Double posicaoY) {
+        this.posicaoY = posicaoY;
     }
 }
