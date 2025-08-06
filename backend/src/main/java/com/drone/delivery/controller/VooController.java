@@ -3,13 +3,17 @@ package com.drone.delivery.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.drone.delivery.service.DroneService;
 import com.drone.delivery.service.VooService;
 import com.drone.delivery.service.PedidoService;
+import com.drone.delivery.dto.CriarVooRequest;
+import com.drone.delivery.model.Voo;
 import com.drone.delivery.model.enums.StatusPedido;
 
 @RestController
@@ -24,6 +28,17 @@ public class VooController {
     
     @Autowired
     private PedidoService pedidoService;
+
+    // Criar voo
+    @PostMapping("/criar")
+    public ResponseEntity<?> criarVoo(@RequestBody CriarVooRequest request) {
+        try {
+            Voo voo = vooService.criarVoo(request.getDrone(), request.getPedidos());
+            return ResponseEntity.ok(voo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        }
+    }
     
     // Iniciar voo
     @PutMapping("/{vooId}/iniciar")

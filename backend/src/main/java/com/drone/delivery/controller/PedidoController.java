@@ -1,8 +1,12 @@
 package com.drone.delivery.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.drone.delivery.dto.PedidoRequestDTO;
 import com.drone.delivery.dto.PedidoResponseDTO;
 import com.drone.delivery.model.Pedido;
+import com.drone.delivery.model.enums.StatusPedido;
 import com.drone.delivery.service.OptimizacaoService;
 import com.drone.delivery.service.PedidoService;
 
@@ -56,5 +61,46 @@ public class PedidoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<PedidoResponseDTO>> buscarTodosPedidos() {
+        try {
+            List<Pedido> pedidos = pedidoService.buscarTodosPedidos();
+            List<PedidoResponseDTO> response = pedidos.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GetMapping("/pendentes")
+    public ResponseEntity<List<PedidoResponseDTO>> buscarPedidosPendentes() {
+        try {
+            List<Pedido> pedidos = pedidoService.buscarPedidosPorStatus(StatusPedido.PENDENTE);
+            List<PedidoResponseDTO> response = pedidos.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    private PedidoResponseDTO converterParaDTO(Pedido pedido) {
+        PedidoResponseDTO dto = new PedidoResponseDTO();
+        dto.setId(pedido.getId());
+        dto.setClienteX(pedido.getLocalizacaoCliente().getX());
+        dto.setClienteY(pedido.getLocalizacaoCliente().getY());
+        dto.setPeso(pedido.getPeso());
+        dto.setPrioridade(pedido.getPrioridade());
+        dto.setStatus(pedido.getStatus());
+        dto.setPontuacaoPrioridade(pedido.getPontuacaoPrioridade());
+        dto.setDataCriacao(pedido.getDataCriacao());
+        return dto;
     }
 }

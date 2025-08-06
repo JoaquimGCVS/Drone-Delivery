@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.drone.delivery.model.Coordenada;
 import com.drone.delivery.model.Drone;
 import com.drone.delivery.model.Pedido;
-import com.drone.delivery.model.Voo;
 import com.drone.delivery.model.enums.StatusDrone;
 import com.drone.delivery.model.enums.StatusPedido;
 
@@ -158,36 +157,5 @@ public class OptimizacaoService {
         
         // Criar voo
         vooService.criarVoo(drone, sequenciaOtima);
-    }
-    
-    // Método auxiliar: Calcular eficiência da alocação
-    public double calcularEficienciaAlocacao() {
-        List<Pedido> todosPedidos = pedidoService.buscarTodosPedidos();
-        List<Voo> todosVoos = vooService.buscarTodosVoos();
-        
-        if (todosPedidos.isEmpty()) {
-            return 0.0;
-        }
-        
-        // Eficiência = Total de pedidos / Total de voos
-        return (double) todosPedidos.size() / Math.max(todosVoos.size(), 1);
-    }
-    
-    // Método auxiliar: Estatísticas de otimização
-    public String gerarRelatorioOtimizacao() {
-        List<Pedido> pedidosPendentes = pedidoService.buscarPedidosPorStatus(StatusPedido.PENDENTE);
-        List<Pedido> pedidosAlocados = pedidoService.buscarPedidosPorStatus(StatusPedido.ALOCADO);
-        List<Drone> dronesDisponiveis = droneService.buscarDronesDisponiveis();
-        List<Voo> voosAtivos = vooService.buscarRotasAtivas();
-        
-        StringBuilder relatorio = new StringBuilder();
-        relatorio.append("=== RELATÓRIO DE OTIMIZAÇÃO ===\n");
-        relatorio.append("Pedidos Pendentes: ").append(pedidosPendentes.size()).append("\n");
-        relatorio.append("Pedidos Alocados: ").append(pedidosAlocados.size()).append("\n");
-        relatorio.append("Drones Disponíveis: ").append(dronesDisponiveis.size()).append("\n");
-        relatorio.append("Voos Ativos: ").append(voosAtivos.size()).append("\n");
-        relatorio.append("Eficiência: ").append(String.format("%.2f", calcularEficienciaAlocacao())).append(" pedidos/voo\n");
-        
-        return relatorio.toString();
     }
 }
