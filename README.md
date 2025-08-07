@@ -1,5 +1,7 @@
 # 🚁 Drone Delivery - Visão Geral e Regras do Sistema
 
+Este projeto é uma simulação de um sistema de entregas urbanas por drones. Ele gerencia uma frota de drones autônomos, recebendo pedidos de entrega com localização, peso e prioridade, e alocando-os de forma otimizada aos drones disponíveis. O sistema respeita regras de capacidade, alcance, priorização e busca maximizar a eficiência das entregas, agrupando pedidos sempre que possível. Todas as operações são expostas via APIs RESTful para fácil integração e testes.
+
 ## Tecnologias Utilizadas
 - Java 21.0.6 (Oracle, LTS)
 - Spring Boot 3.5.4
