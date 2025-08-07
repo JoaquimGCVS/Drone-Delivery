@@ -1,5 +1,16 @@
-
 # 🚁 Drone Delivery - Visão Geral e Regras do Sistema
+
+## Tecnologias Utilizadas
+- Java 21.0.6 (Oracle, LTS)
+- Spring Boot 3.5.4
+- Spring Data JPA
+- PostgreSQL
+- Maven 3.9.9
+- RESTful APIs
+- GitHub Copilot (auxílio no desenvolvimento)
+
+> **Ambiente testado:**
+> - Sistema operacional: Windows 11 
 
 
 ## Regras do Sistema
