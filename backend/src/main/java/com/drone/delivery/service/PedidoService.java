@@ -20,9 +20,9 @@ public class PedidoService {
     
     // Criar novo pedido e calcular prioridade
     public Pedido criarPedido(Double clienteX, Double clienteY, Double peso, PrioridadePedido prioridade) {
-        // Validações básicas
-        if (peso <= 0 || peso > 10) {
-            throw new IllegalArgumentException("Peso deve estar entre 0 e 10kg");
+        // Validação básica: peso deve ser positivo e não pode exceder 14.0kg (limite do sistema)
+        if (peso == null || peso <= 0 || peso > 14.0) {
+            throw new IllegalArgumentException("Peso do pedido deve ser maior que zero e no máximo 14kg");
         }
         
         Coordenada localizacaoCliente = new Coordenada(clienteX, clienteY);

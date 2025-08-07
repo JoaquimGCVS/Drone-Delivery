@@ -16,6 +16,7 @@ import com.drone.delivery.repository.VooRepository;
 
 @Service
 public class VooService {
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(VooService.class);
 
     @Autowired
     private VooRepository vooRepository;
@@ -24,6 +25,7 @@ public class VooService {
     public Voo criarVoo(Drone drone, List<Pedido> pedidos) {
         // Validações
         if (pedidos.isEmpty()) {
+            logger.warn("Tentativa de criar voo com lista de pedidos vazia para drone {}", drone.getId());
             throw new IllegalArgumentException("Lista de pedidos não pode estar vazia");
         }
 
@@ -34,17 +36,20 @@ public class VooService {
                 .toList();
 
         if (!voosAtivos.isEmpty()) {
+            logger.warn("Drone {} já possui voo ativo. Voos ativos: {}", drone.getId(), voosAtivos.size());
             throw new IllegalStateException("Drone já possui voo ativo. Drone ID: " + drone.getId() +
                     ", Voos ativos: " + voosAtivos.size());
         }
 
         Double pesoTotal = calcularPesoTotal(pedidos);
         if (pesoTotal > drone.getCapacidadeMaxima()) {
+            logger.warn("Peso total ({}) excede capacidade do drone {} ({} kg)", pesoTotal, drone.getId(), drone.getCapacidadeMaxima());
             throw new IllegalArgumentException("Peso total excede capacidade do drone");
         }
 
         Double distanciaTotal = calcularDistanciaTotal(pedidos);
         if (distanciaTotal > drone.getAlcanceMaximo()) {
+            logger.warn("Distância total ({}) excede alcance do drone {} ({} km)", distanciaTotal, drone.getId(), drone.getAlcanceMaximo());
             throw new IllegalArgumentException("Distância total excede alcance do drone");
         }
 

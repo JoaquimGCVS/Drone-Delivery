@@ -14,6 +14,10 @@ import com.drone.delivery.model.enums.StatusPedido;
 
 @Service
 public class OptimizacaoService {
+    @org.springframework.context.event.EventListener(org.springframework.boot.context.event.ApplicationReadyEvent.class)
+    public void alocarPedidosAoIniciar() {
+        alocarPedidosOtimizado();
+    }
     
     @Autowired
     private PedidoService pedidoService;
@@ -25,6 +29,14 @@ public class OptimizacaoService {
     private VooService vooService;
     
     // MÉTODO PRINCIPAL - Alocar pedidos aos drones
+    // Alocar pedidos de forma otimizada para um drone específico
+    public List<Pedido> alocarPedidosParaDrone(Drone drone, List<Pedido> pedidosPendentes) {
+        List<List<Pedido>> grupos = agruparPedidosPorDrone(pedidosPendentes, java.util.List.of(drone));
+        if (grupos.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return grupos.get(0);
+    }
     public void alocarPedidosOtimizado() {
         // 1. Buscar pedidos pendentes ordenados por prioridade (menor pontuação = maior prioridade)
         List<Pedido> pedidosPendentes = pedidoService.buscarPedidosPendentesOrdenados();

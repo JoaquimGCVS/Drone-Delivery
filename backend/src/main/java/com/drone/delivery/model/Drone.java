@@ -19,8 +19,8 @@ public class Drone {
     
     private String nome;
     private StatusDrone status;
-    private Double capacidadeMaxima = 10.0; // kg
-    private Double alcanceMaximo = 20.0; // km
+    private Double capacidadeMaxima; // kg
+    private Double alcanceMaximo; // km
     
     @Embedded
     private Coordenada posicaoAtual;
